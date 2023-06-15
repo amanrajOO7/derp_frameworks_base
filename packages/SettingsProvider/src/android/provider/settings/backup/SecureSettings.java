@@ -363,6 +363,9 @@ public class SecureSettings {
         Settings.Secure.DISPLAY_COLOR_BALANCE_GREEN,
         Settings.Secure.DISPLAY_COLOR_BALANCE_BLUE,
         Settings.Secure.DISPLAY_COLOR_TEMPERATURE,
-        Settings.Secure.DISPLAY_COLOR_SATURATION
+        Settings.Secure.DISPLAY_COLOR_SATURATION,
+        Settings.Secure.DOZE_DOUBLE_TAP_GESTURE_ALLOW_AMBIENT,
+        Settings.Secure.DOZE_TAP_GESTURE_ALLOW_AMBIENT,
+        Settings.Secure.DOZE_PICK_UP_GESTURE_ALLOW_AMBIENT
     };
 }
