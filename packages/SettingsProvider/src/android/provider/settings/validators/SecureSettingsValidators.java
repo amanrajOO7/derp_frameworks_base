@@ -616,5 +616,8 @@ public class SecureSettingsValidators {
         VALIDATORS.put(Secure.DISPLAY_COLOR_BALANCE_BLUE, new InclusiveIntegerRangeValidator(0, 255));
         VALIDATORS.put(Secure.DISPLAY_COLOR_TEMPERATURE, new InclusiveIntegerRangeValidator(3000, 9000));
         VALIDATORS.put(Secure.DISPLAY_COLOR_SATURATION, new InclusiveIntegerRangeValidator(0, 200));
+        VALIDATORS.put(Secure.DOZE_DOUBLE_TAP_GESTURE_ALLOW_AMBIENT, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(Secure.DOZE_TAP_GESTURE_ALLOW_AMBIENT, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(Secure.DOZE_PICK_UP_GESTURE_ALLOW_AMBIENT, BOOLEAN_VALIDATOR);
     }
 }
