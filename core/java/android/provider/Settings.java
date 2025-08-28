@@ -14774,6 +14774,12 @@ public final class Settings {
          */
         public static final String DOZE_PICK_UP_GESTURE_VIBRATE = "doze_pick_up_gesture_vibrate";
 
+	/**
+         * Whether to show ambient instead of waking for the dt2w gesture
+         * @hide
+         */
+        public static final String DOZE_DOUBLE_TAP_GESTURE_AMBIENT = "doze_double_tap_gesture_ambient";
+
         /**
          * Whether to show or hide the arrow for back gesture
          * @hide
