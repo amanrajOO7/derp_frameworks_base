@@ -1469,6 +1469,14 @@ public final class SystemServer implements Dumpable {
         }
         t.traceEnd();
 
+        t.traceBegin("PublishAttestationBootKey");
+        try {
+            VerifiedBootState.publishAttestationBootKey();
+        } catch (Throwable e) {
+            Slog.e(TAG, "Failed to publish attestation vbmeta public key digest", e);
+        }
+        t.traceEnd();
+
         // Manages Resources packages
         t.traceBegin("StartResourcesManagerService");
         ResourcesManagerService resourcesService = new ResourcesManagerService(mSystemContext);

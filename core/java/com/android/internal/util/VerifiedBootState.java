@@ -70,7 +70,7 @@ public final class VerifiedBootState {
             return;
         }
         byte[] hash = readTeeBootHash();
-        if (hash == null || hash.length != DIGEST_SIZE_BYTES) {
+        if (hash == null || hash.length != DIGEST_SIZE_BYTES || isAllZero(hash)) {
             Log.w(TAG, "TEE boot hash unavailable");
             return;
         }
@@ -79,6 +79,27 @@ public final class VerifiedBootState {
             Log.i(TAG, "Published TEE vbmeta digest");
         } catch (RuntimeException e) {
             Log.e(TAG, "Failed to publish TEE vbmeta digest", e);
+        }
+    }
+
+    /**
+     * Publish the effective verified-boot public key digest when the bootloader
+     * left {@code ro.boot.vbmeta.public_key_digest} unset or zeroed.
+     */
+    public static void publishAttestationBootKey() {
+        if (isValidDigestHex(SystemProperties.get(REAL_VBMETA_PUBLIC_KEY_DIGEST_PROP, ""))) {
+            return;
+        }
+        String keyHex = getAttestationBootKeyHex();
+        if (!isValidDigestHex(keyHex)) {
+            Log.w(TAG, "Attestation boot key unavailable");
+            return;
+        }
+        try {
+            SystemProperties.set(REAL_VBMETA_PUBLIC_KEY_DIGEST_PROP, keyHex);
+            Log.i(TAG, "Published attestation vbmeta public key digest");
+        } catch (RuntimeException e) {
+            Log.e(TAG, "Failed to publish attestation vbmeta public key digest", e);
         }
     }
 
@@ -226,11 +247,27 @@ public final class VerifiedBootState {
         if (value == null || value.length() != DIGEST_SIZE_BYTES * 2) {
             return false;
         }
+        boolean allZero = true;
         for (int i = 0; i < value.length(); i++) {
             char c = value.charAt(i);
             if ((c < '0' || c > '9')
                     && (c < 'a' || c > 'f')
                     && (c < 'A' || c > 'F')) {
+                return false;
+            }
+            if (c != '0') {
+                allZero = false;
+            }
+        }
+        return !allZero;
+    }
+
+    public static boolean isAllZero(byte[] bytes) {
+        if (bytes == null || bytes.length == 0) {
+            return true;
+        }
+        for (byte b : bytes) {
+            if (b != 0) {
                 return false;
             }
         }

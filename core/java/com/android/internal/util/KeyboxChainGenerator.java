@@ -288,8 +288,18 @@ public final class KeyboxChainGenerator {
 
             byte[] bootKey = rootOfTrustOctet(originalRootOfTrust, 0);
             byte[] bootHash = rootOfTrustOctet(originalRootOfTrust, 3);
-            if (bootKey == null || bootHash == null) {
+            if (bootHash == null || VerifiedBootState.isAllZero(bootHash)) {
+                bootHash = VerifiedBootState.getAttestationBootHashBytes();
+            }
+            if (bootHash == null || VerifiedBootState.isAllZero(bootHash)) {
                 Log.w(TAG, "Hardware leaf has no verified-boot hash");
+                return null;
+            }
+            if (bootKey == null || VerifiedBootState.isAllZero(bootKey)) {
+                bootKey = VerifiedBootState.getAttestationBootKeyBytes();
+            }
+            if (bootKey == null || VerifiedBootState.isAllZero(bootKey)) {
+                Log.w(TAG, "Hardware leaf has no verified-boot key");
                 return null;
             }
 
